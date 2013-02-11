@@ -16,10 +16,20 @@
 //    along with DeadRSX.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
-#include <png.h>
-#include <pngdec/loadpng.h>
+#include <assert.h>
+#include <stdio.h>
+#include <malloc.h>
+#include <string.h>
+#include <unistd.h>
+
 #include <sysutil/video.h>
-#include <rsx/gcm.h>
+#include <rsx/gcm_sys.h>
+#include <rsx/rsx.h>
+#include <rsx/commands.h>
+#include <nv40v1.h>
+
+#include <sysmodule/sysmodule.h>
+#include <pngdec/pngdec.h>
 
 #define COLOR_NONE -1
 #define COLOR_BLACK 0x00000000
@@ -31,7 +41,7 @@
 
 extern u32 *buffer[2];
 extern gcmContextData *context; 
-extern VideoResolution res;
+extern videoResolution res;
 
 void deadrsx_init(); // initilize the screen
 void deadrsx_scale(); // scales the screen to 847x511 to support all tv screens
@@ -45,4 +55,4 @@ void deadrsx_offset(u32 dooffset, int x, int y, int w, int h);
 void deadrsx_scaleoffset(u32 dooffset, int x, int y, int w, int h, int ow, int oh);
 void deadrsx_sprite(u32 dooffset, float x, float y, float w, float h, int ow, int oh, int tilex, int tiley, int ax, int ay);
 
-void deadrsx_loadfile(char inputpath[], PngDatas inputImage, u32 *inputOffset);
+void deadrsx_loadfile(char inputpath[], pngData inputImage, u32 *inputOffset);

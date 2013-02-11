@@ -2,6 +2,21 @@
 #define __NV_SHADERS_H__
 
 #include <rsx/commands.h>
+#include <rsx/rsx.h>
+
+typedef struct {
+	uint32_t size;
+	uint32_t in_reg;
+	uint32_t out_reg;
+	uint32_t data[];
+} realityVertexProgram_old;
+
+typedef struct {
+	uint32_t offset;
+	uint32_t size;
+	uint32_t num_regs;
+	uint32_t data[];
+} realityFragmentProgram_old; 
 
 static realityVertexProgram_old nv40_vp = {
 	.in_reg  = 0x00000309,
@@ -31,5 +46,15 @@ static realityFragmentProgram_old nv30_fp = {
 0x01401e81, 0x1c9dc800, 0x0001c800, 0x0001c800,
 }
 };
+
+
+void realityInstallFragmentProgram_old(gcmContextData *context, realityFragmentProgram_old *prog, uint32_t *addr) {
+	// We don't actually need context, but if we leave it out people will forget.
+	int i;
+	for( i = 0; i < prog->size; ++i ) {
+		addr[i] = (((prog->data[i] >> 16 ) & 0xffff) << 0) | (((prog->data[i] >> 0 ) & 0xffff) << 16);
+	}
+	assert(rsxAddressToOffset(addr, &prog->offset) == 0);
+}
 
 #endif
